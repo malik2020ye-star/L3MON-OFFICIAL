@@ -5,7 +5,7 @@ const port = process.env.PORT || 10000;
 
 app.use(express.urlencoded({ extended: true }));
 
-// هذا السطر يضمن العثور على المجلد مهما كان مكان تشغيل السيرفر
+// تحديد مسار المجلد الذي يحتوي على صفحة الدخول
 const includesPath = path.join(__dirname, 'includes');
 app.use(express.static(includesPath));
 
@@ -16,12 +16,10 @@ app.get('/', (req, res) => {
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
     if (username === 'admin' && password === '123456') {
-        res.send('<h1 style="color:green;text-align:center;margin-top:50px;">✔️ تم تسجيل الدخول بنجاح!</h1>');
+        res.send('<h1 style="color:green;text-align:center;margin-top:50px;">✔️ أهلاً بك.. تم الدخول!</h1>');
     } else {
-        res.send('<h1 style="color:red;text-align:center;margin-top:50px;">❌ خطأ في البيانات!</h1><p style="text-align:center;"><a href="/">رجوع</a></p>');
+        res.send('<h1 style="color:red;text-align:center;margin-top:50px;">❌ خطأ!</h1><a href="/">رجوع</a>');
     }
 });
 
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-});
+app.listen(port, () => console.log(`Server started on ${port}`));
