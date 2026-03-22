@@ -2,46 +2,29 @@ const express = require('express');
 const app = express();
 const path = require('path');
 
-// تحديد المنفذ الذي يفضله سيرفر Render
+// منفذ Render الرسمي
 const port = process.env.PORT || 10000;
 
-// تعريف المسارات لتسهيل وصول السيرفر للملفات
 app.use(express.urlencoded({ extended: true }));
+
+// هذا السطر هو السحر: سيجعل السيرفر يرى مجلد includes أينما كان
 app.use(express.static(path.join(__dirname, 'includes')));
 
-// الصفحة الرئيسية: تفتح صفحة login.html الموجودة داخل مجلد includes
+// عرض صفحة الدخول
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'includes', 'login.html'));
 });
 
-// مسار إضافي للاحتياط
-app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, 'includes', 'login.html'));
-});
-
-// معالجة بيانات الدخول عند الضغط على زر Login
+// معالجة تسجيل الدخول
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
-    
-    // التحقق من البيانات (admin / 123456)
     if (username === 'admin' && password === '123456') {
-        res.send(`
-            <div style="background:#1a1a1a; color:#2ecc71; text-align:center; padding:50px; font-family:sans-serif; height:100vh;">
-                <h1>✔️ تم تسجيل الدخول بنجاح</h1>
-                <p style="color:white;">أهلاً بك في لوحة تحكم L3MON الخاصة بك</p>
-            </div>
-        `);
+        res.send('<h1 style="color:green;text-align:center;">✔️ تم الدخول بنجاح!</h1>');
     } else {
-        res.send(`
-            <div style="background:#1a1a1a; color:#e74c3c; text-align:center; padding:50px; font-family:sans-serif; height:100vh;">
-                <h1>❌ خطأ في اسم المستخدم أو كلمة المرور</h1>
-                <a href="/" style="color:white; text-decoration:none; border:1px solid white; padding:10px 20px;">العودة للمحاولة</a>
-            </div>
-        `);
+        res.send('<h1 style="color:red;text-align:center;">❌ خطأ!</h1><a href="/">رجوع</a>');
     }
 });
 
-// تشغيل السيرفر
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
