@@ -4,26 +4,21 @@ const path = require('path');
 const port = process.env.PORT || 10000;
 
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'src/includes')));
 
-// الصفحة الرئيسية تعرض صفحة اللوجن مباشرة
+// عرض صفحة الدخول فوراً عند فتح الرابط
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'src/includes/login.html'));
+    res.sendFile(path.join(__dirname, 'includes', 'login.html'));
 });
 
-// صفحة اللوجن (للاحتياط)
-app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, 'src/includes/login.html'));
-});
-
-// معالجة بيانات الدخول
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
     if (username === 'admin' && password === '123456') {
-        res.send('<h1 style="color:green; text-align:center; font-family:sans-serif; margin-top:50px;">تم تسجيل الدخول بنجاح! أهلاً بك في لوحة التحكم.</h1>');
+        res.send('<h1>Success! Welcome to L3MON</h1>');
     } else {
-        res.send('<h1 style="color:red; text-align:center; font-family:sans-serif; margin-top:50px;">خطأ في البيانات!</h1><p style="text-align:center;"><a href="/">رجوع</a></p>');
+        res.send('<h1>Error! Try again.</h1><a href="/">Back</a>');
     }
 });
 
-app.listen(port, () => console.log(`Server running on port ${port}`));
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+});
