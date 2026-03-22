@@ -1,40 +1,27 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 10000;
 
-// إعداد الدخول للوحة التحكم
-app.use(express.static(path.join(__dirname, 'src/includes')));
+app.use(express.urlencoded({ extended: true }));
+
+// هذا السطر يضمن العثور على المجلد مهما كان مكان تشغيل السيرفر
+const includesPath = path.join(__dirname, 'includes');
+app.use(express.static(includesPath));
 
 app.get('/', (req, res) => {
-    res.send('<h1>L3MON Server is Active!</h1><p>Go to <a href="/login">/login</a> to access your dashboard.</p>');
+    res.sendFile(path.join(includesPath, 'login.html'));
 });
 
-app.get('/login', (req, res) => {
-    // محاولة فتح ملف الدخول من المجلد الداخلي
-    res.sendFile(path.join(__dirname, 'src/includes/login.html'), (err) => {
-        if (err) {
-            res.status(500).send("Login page not found in /src/includes/. Please check file path.");
-        }
-    });
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+    if (username === 'admin' && password === '123456') {
+        res.send('<h1 style="color:green;text-align:center;margin-top:50px;">✔️ تم تسجيل الدخول بنجاح!</h1>');
+    } else {
+        res.send('<h1 style="color:red;text-align:center;margin-top:50px;">❌ خطأ في البيانات!</h1><p style="text-align:center;"><a href="/">رجوع</a></p>');
+    }
 });
 
 app.listen(port, () => {
-    console.log(`Server is running successfully on port ${port}`);
-});
-
-// محرك التشغيل الأصلي لـ L3MON
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.get('/', (req, res) => {
-    res.redirect('/login');
-});
-
-app.get('/login', (req, res) => {
-    // هذا سيفتح لك واجهة الدخول الأصلية
-    res.sendFile(path.join(__dirname, 'src/includes/login.html'));
-});
-
-app.listen(port, () => {
-    console.log(`L3MON Server is running on port ${port}`);
+    console.log(`Server is running on port ${port}`);
 });
