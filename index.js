@@ -4,39 +4,26 @@ const port = process.env.PORT || 10000;
 
 app.use(express.urlencoded({ extended: true }));
 
-// هذه الصفحة ستظهر فوراً بمجرد فتح الرابط
 app.get('/', (req, res) => {
     res.send(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>L3MON LOGIN</title>
-            <style>
-                body { background: #0f0f0f; color: #00ff00; font-family: sans-serif; text-align: center; padding-top: 100px; }
-                form { background: #1a1a1a; display: inline-block; padding: 30px; border: 1px solid #00ff00; border-radius: 10px; }
-                input { display: block; margin: 10px auto; padding: 10px; width: 200px; background: #000; color: #0f0; border: 1px solid #0f0; }
-                button { background: #00ff00; color: #000; padding: 10px 20px; border: none; cursor: pointer; font-weight: bold; }
-            </style>
-        </head>
-        <body>
-            <h1>L3MON CONTROL PANEL</h1>
-            <form action="/login" method="POST">
-                <input type="text" name="username" placeholder="Username" required>
-                <input type="password" name="password" placeholder="Password" required>
-                <button type="submit">LOGIN</button>
+        <body style="background:#000; color:#0f0; text-align:center; padding-top:100px; font-family:monospace;">
+            <h1>L3MON SYSTEM ACTIVE</h1>
+            <form action="/login" method="POST" style="border:1px solid #0f0; display:inline-block; padding:20px;">
+                <input type="text" name="username" placeholder="User" style="display:block; margin:10px auto;">
+                <input type="password" name="password" placeholder="Pass" style="display:block; margin:10px auto;">
+                <button type="submit" style="background:#0f0; color:#000; cursor:pointer;">CONNECT</button>
             </form>
         </body>
-        </html>
     `);
 });
 
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
     if (username === 'admin' && password === '123456') {
-        res.send('<h1 style="color:green; text-align:center;">WELCOME MASTER! LOGIN SUCCESS</h1>');
+        res.send('<h1 style="color:green; text-align:center;">LOGIN SUCCESSFUL</h1>');
     } else {
-        res.send('<h1 style="color:red; text-align:center;">WRONG DATA!</h1><a href="/" style="color:white;">BACK</a>');
+        res.send('<h1 style="color:red; text-align:center;">ACCESS DENIED</h1><a href="/" style="color:white;">RETRY</a>');
     }
 });
 
-app.listen(port, () => console.log('Server is Live'));
+app.listen(port, () => console.log('SYSTEM IS LIVE'));
