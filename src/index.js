@@ -7,9 +7,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'src/includes')));
 
 // الصفحة الرئيسية تحولك للوجن
-app.get('/', (req, res) => res.redirect('/login'));
-
-// عرض صفحة اللوجن
+app.get('/', (req, res) => { res.sendFile(path.join(__dirname, 'src/includes/login.html')); });
 app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'src/includes/login.html'));
 });
